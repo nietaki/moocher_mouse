@@ -1,0 +1,35 @@
+<html>
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      captureMouseCoordinates = false;
+      mouseCoordinates = [];
+      startTime = Date.now();
+      $(document).mousedown(function(e) {
+        captureMouseCoordinates = !captureMouseCoordinates;
+        console.log("capturing:");
+        console.log(captureMouseCoordinates);
+        if(captureMouseCoordinates) {
+          mouseCoordinates = [];
+          startTime = Date.now();
+          mouseCoordinates.push([0, event.pageX, event.pageY]);
+        }
+      }).mousemove(function(event) {
+        if (captureMouseCoordinates) {
+          millis = Date.now() - startTime;
+          mouseCoordinates.push([millis, event.pageX, event.pageY]);
+        }
+      }).keydown(function(event){
+        // 32 = space
+        if (event.keyCode == 32) {
+          console.log(JSON.stringify(mouseCoordinates));
+          output = mouseCoordinates.map(row => "{" + row.join(",") + "},").join("\n");
+          console.log(output);
+          mouseCoordinates = [];
+        }
+      });
+    </script>
+</head>
+<body>
+</body>
+</html>
